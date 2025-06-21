@@ -14,10 +14,14 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Random;
 import javax.swing.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 
 public class Register extends javax.swing.JFrame {
+    
 
+    
     /**
      * Creates new form Register
      */
@@ -28,9 +32,11 @@ public class Register extends javax.swing.JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
         generateCaptcha();
+        setTitle("Autoclean");
     }
     
     String generatedCaptcha = "";
+    boolean isPasswordVisible = false;
 
 
     /**
@@ -49,10 +55,8 @@ public class Register extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        confirmPassword = new javax.swing.JTextField();
         RegisterUsername = new javax.swing.JTextField();
         ConfirmUsername = new javax.swing.JTextField();
-        registerPassword = new javax.swing.JTextField();
         btnRegister = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         lblCaptcha = new javax.swing.JLabel();
@@ -60,6 +64,9 @@ public class Register extends javax.swing.JFrame {
         btnRefreshCaptcha = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         toLogin = new javax.swing.JButton();
+        confirmPassword = new javax.swing.JPasswordField();
+        registerPassword1 = new javax.swing.JPasswordField();
+        showPassword = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,7 +86,7 @@ public class Register extends javax.swing.JFrame {
         jLabel3.setBounds(50, 70, 420, 25);
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 36)); // NOI18N
-        jLabel4.setText("Register AutoClean JavaDesk");
+        jLabel4.setText("Daftar AutoClean JavaDesk");
         jPanel1.add(jLabel4);
         jLabel4.setBounds(50, 40, 430, 40);
 
@@ -97,14 +104,6 @@ public class Register extends javax.swing.JFrame {
         jLabel8.setText("Input Captcha");
         jPanel1.add(jLabel8);
         jLabel8.setBounds(220, 340, 160, 21);
-
-        confirmPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmPasswordActionPerformed(evt);
-            }
-        });
-        jPanel1.add(confirmPassword);
-        confirmPassword.setBounds(220, 300, 260, 30);
         jPanel1.add(RegisterUsername);
         RegisterUsername.setBounds(220, 120, 260, 30);
 
@@ -115,14 +114,6 @@ public class Register extends javax.swing.JFrame {
         });
         jPanel1.add(ConfirmUsername);
         ConfirmUsername.setBounds(220, 180, 260, 30);
-
-        registerPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registerPasswordActionPerformed(evt);
-            }
-        });
-        jPanel1.add(registerPassword);
-        registerPassword.setBounds(220, 240, 260, 30);
 
         btnRegister.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N
         btnRegister.setText("Register");
@@ -136,6 +127,7 @@ public class Register extends javax.swing.JFrame {
         btnRegister.setBounds(60, 480, 170, 30);
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo.png")));
+        jLabel7.setMaximumSize(new java.awt.Dimension(20, 20));
         jPanel1.add(jLabel7);
         jLabel7.setBounds(530, 170, 200, 200);
 
@@ -182,6 +174,19 @@ public class Register extends javax.swing.JFrame {
         });
         jPanel1.add(toLogin);
         toLogin.setBounds(530, 510, 210, 35);
+        jPanel1.add(confirmPassword);
+        confirmPassword.setBounds(220, 300, 260, 30);
+        jPanel1.add(registerPassword1);
+        registerPassword1.setBounds(220, 242, 260, 30);
+
+        showPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/view.png"))); // NOI18N
+        showPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showPasswordActionPerformed(evt);
+            }
+        });
+        jPanel1.add(showPassword);
+        showPassword.setBounds(490, 240, 30, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -203,17 +208,9 @@ public class Register extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void confirmPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_confirmPasswordActionPerformed
-
     private void ConfirmUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmUsernameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ConfirmUsernameActionPerformed
-
-    private void registerPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_registerPasswordActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
     String inputCaptcha = txtCaptchaInput.getText();
@@ -227,7 +224,7 @@ public class Register extends javax.swing.JFrame {
         
     String username = RegisterUsername.getText();
     String confirmUsername = ConfirmUsername.getText();
-    String password = registerPassword.getText();
+    String password = confirmPassword.getText();
     String confirmPass = confirmPassword.getText();
 
 if (!username.equals(confirmUsername)) {
@@ -239,40 +236,40 @@ if (!password.equals(confirmPass)) {
     return;
 }
 
-try {
-    // koneksi ke database
-    Class.forName("com.mysql.cj.jdbc.Driver");
-    java.sql.Connection conn = java.sql.DriverManager.getConnection(
-        "jdbc:mysql://localhost:3306/autoclean_javadesk", "root", ""); // sesuaikan password
+    try {
+        // koneksi ke database
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        java.sql.Connection conn = java.sql.DriverManager.getConnection(
+            "jdbc:mysql://localhost:3306/autoclean_javadesk", "root", ""); // sesuaikan password
 
-    // cek apakah username sudah dipakai
-    java.sql.PreparedStatement checkStmt = conn.prepareStatement("SELECT * FROM akun WHERE username=?");
-    checkStmt.setString(1, username);
-    java.sql.ResultSet rs = checkStmt.executeQuery();
-    if (rs.next()) {
-        JOptionPane.showMessageDialog(this, "Username sudah digunakan!");
-        return;
-    }
+        // cek apakah username sudah dipakai
+        java.sql.PreparedStatement checkStmt = conn.prepareStatement("SELECT * FROM akun WHERE username=?");
+        checkStmt.setString(1, username);
+        java.sql.ResultSet rs = checkStmt.executeQuery();
+        if (rs.next()) {
+            JOptionPane.showMessageDialog(this, "Username sudah digunakan!");
+            return;
+        }
 
-    // insert data
-    java.sql.PreparedStatement pst = conn.prepareStatement("INSERT INTO akun (username, password) VALUES (?, ?)");
-    pst.setString(1, username);
-    pst.setString(2, password);
-    pst.executeUpdate();
-    
-    JOptionPane.showMessageDialog(this, "Registrasi berhasil!");
-    new Login().setVisible(true);
-    dispose();
-    
-    // kosongkan form
-    RegisterUsername.setText("");
-    ConfirmUsername.setText("");
-    registerPassword.setText("");
-    confirmPassword.setText("");
-    txtCaptchaInput.setText("");
-    generateCaptcha();
+        // insert data
+        java.sql.PreparedStatement pst = conn.prepareStatement("INSERT INTO akun (username, password) VALUES (?, ?)");
+        pst.setString(1, username);
+        pst.setString(2, hashPassword(password));
+        pst.executeUpdate();
 
-    conn.close();
+        JOptionPane.showMessageDialog(this, "Registrasi berhasil!");
+        new Login().setVisible(true);
+        dispose();
+
+        // kosongkan form
+        RegisterUsername.setText("");
+        ConfirmUsername.setText("");
+        confirmPassword.setText("");
+        confirmPassword.setText("");
+        txtCaptchaInput.setText("");
+        generateCaptcha();
+
+        conn.close();
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     
@@ -294,6 +291,20 @@ try {
        dispose();
     }//GEN-LAST:event_toLoginActionPerformed
 
+    private void showPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordActionPerformed
+        // TODO add your handling code here:
+
+        if (isPasswordVisible) {
+            registerPassword1.setEchoChar('\u2022'); // default bulat-bulat
+            confirmPassword.setEchoChar('\u2022');
+        } else {
+            registerPassword1.setEchoChar((char)0); // show text
+            confirmPassword.setEchoChar((char)0);
+        }
+        
+        isPasswordVisible = !isPasswordVisible;
+    }//GEN-LAST:event_showPasswordActionPerformed
+
     private void generateCaptcha() {
     String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     StringBuilder captcha = new StringBuilder();
@@ -304,7 +315,23 @@ try {
     generatedCaptcha = captcha.toString();
     lblCaptcha.setText(generatedCaptcha); // Tampilkan captcha ke label
 }
+    private String hashPassword(String password) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = md.digest(password.getBytes());
+        
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hashBytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+        
+    } catch (NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+    }
 
+    
     /**
      * @param args the command line arguments
      */
@@ -345,7 +372,7 @@ try {
     private javax.swing.JTextField RegisterUsername;
     private javax.swing.JButton btnRefreshCaptcha;
     private javax.swing.JButton btnRegister;
-    private javax.swing.JTextField confirmPassword;
+    private javax.swing.JPasswordField confirmPassword;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -356,7 +383,8 @@ try {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCaptcha;
-    private javax.swing.JTextField registerPassword;
+    private javax.swing.JPasswordField registerPassword1;
+    private javax.swing.JToggleButton showPassword;
     private javax.swing.JButton toLogin;
     private javax.swing.JTextField txtCaptchaInput;
     // End of variables declaration//GEN-END:variables

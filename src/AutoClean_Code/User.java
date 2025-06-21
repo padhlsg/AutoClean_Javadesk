@@ -9,20 +9,20 @@ package AutoClean_Code;
  * @author Fadhil
  */
 public class User {
-    private String nama;
+    private String username;     
     private String nomorTelepon;
 
-    public User(String nama, String nomorTelepon) {
-        this.nama = nama;
+    public User(String username, String nomorTelepon) {
+        this.username = username;
         this.nomorTelepon = nomorTelepon;
     }
 
-    public String getNama() {
-        return nama;
+    public String getUsername() {    
+        return username;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setUsername(String username) {  
+        this.username = username;
     }
 
     public String getNomorTelepon() {
@@ -34,6 +34,7 @@ public class User {
     }
 
     public void tampilkanInfo() {
-        System.out.println("User: " + nama + ", Telepon: " + nomorTelepon);
+        System.out.println("Username: " + username);
+        System.out.println("Telepon: " + nomorTelepon);
     }
 }

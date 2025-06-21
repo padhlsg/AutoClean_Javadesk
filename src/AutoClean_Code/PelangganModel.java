@@ -8,17 +8,17 @@ package AutoClean_Code;
  *
  * @author Fadhil
  */
-public class PelangganModel extends User implements UserAction {
+public abstract class PelangganModel extends User implements UserAction {
     private String tipeKendaraan;
     private String merkKendaraan;
     private String platNomor;
     private String opsiCuci;
     private String jadwalCuci;
 
-    public PelangganModel(String nama, String nomorTelepon,
+    public PelangganModel(String username, String nomorTelepon,
                           String tipeKendaraan, String merkKendaraan,
                           String platNomor, String opsiCuci, String jadwalCuci) {
-        super(nama, nomorTelepon); // panggil constructor User
+        super(username, nomorTelepon); // panggil constructor User
         this.tipeKendaraan = tipeKendaraan;
         this.merkKendaraan = merkKendaraan;
         this.platNomor = platNomor;
@@ -30,7 +30,7 @@ public class PelangganModel extends User implements UserAction {
     @Override
     public void tampilkanInfo() {
         System.out.println("=== Data Pelanggan ===");
-        System.out.println("Nama           : " + getNama());
+        System.out.println("Username       : " + getUsername()); 
         System.out.println("No. Telepon    : " + getNomorTelepon());
         System.out.println("Tipe Kendaraan : " + tipeKendaraan);
         System.out.println("Merk Kendaraan : " + merkKendaraan);
@@ -40,17 +40,9 @@ public class PelangganModel extends User implements UserAction {
     }
 
     // Implementasi dari interface UserAction
-    @Override
-    public void login() {
-        System.out.println(getNama() + " login sebagai pelanggan.");
-    }
-
-    @Override
-    public void logout() {
-        System.out.println(getNama() + " logout.");
-    }
-
     // Getter untuk akses dari Pelanggan.java (DB insert)
+    
+    
     public String getTipeKendaraan() {
         return tipeKendaraan;
     }
