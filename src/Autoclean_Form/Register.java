@@ -160,7 +160,7 @@ public class Register extends javax.swing.JFrame {
 
         toLogin.setBackground(new java.awt.Color(221, 241, 255));
         toLogin.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N
-        toLogin.setForeground(new java.awt.Color(153, 153, 255));
+        toLogin.setForeground(new java.awt.Color(51, 51, 51));
         toLogin.setText("Sudah Punya akun?, Login saja");
         toLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         toLogin.setBorderPainted(false);

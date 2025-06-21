@@ -143,7 +143,7 @@ public class Login extends javax.swing.JFrame {
 
         toRegister.setBackground(new java.awt.Color(221, 241, 255));
         toRegister.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N
-        toRegister.setForeground(new java.awt.Color(153, 153, 255));
+        toRegister.setForeground(new java.awt.Color(51, 51, 51));
         toRegister.setText("Belum punya akun, Daftar aja dulu!");
         toRegister.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         toRegister.setBorderPainted(false);

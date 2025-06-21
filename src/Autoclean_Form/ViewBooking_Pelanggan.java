@@ -23,11 +23,13 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     
     private String usernameLogin;
     
-    public ViewBooking_Pelanggan() {
+    public ViewBooking_Pelanggan(String usernameLogin) {
+        this.usernameLogin = usernameLogin;
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
-        tampilDataHistory();    
+        tampilDataHistory();  
+        setTitle("AutClean JavaDesk");
         tabelHistory.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
     
@@ -85,6 +87,7 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         btnBayar = new javax.swing.JButton();
         btnBatal = new javax.swing.JButton();
         refreshBtn = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -149,11 +152,23 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         });
 
         btnBatal.setText("Batalkan");
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
 
         refreshBtn.setText("Muat Ulang");
         refreshBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 refreshBtnActionPerformed(evt);
+            }
+        });
+
+        btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
             }
         });
 
@@ -175,7 +190,9 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(refreshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -191,7 +208,8 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBayar)
                     .addComponent(btnBatal)
-                    .addComponent(refreshBtn))
+                    .addComponent(refreshBtn)
+                    .addComponent(btnHapus))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
@@ -211,43 +229,39 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
 
     private void tabelHistoryAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabelHistoryAncestorAdded
         // TODO add your handling code here:
-        
-        try {
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
-        Statement stmt = conn.createStatement();
+                try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
+            Statement stmt = conn.createStatement();
 
-        // Ambil username yg login
-        String currentUser = Login.loggedInUsername;
+            String sql = "SELECT * FROM pelanggan WHERE username = '" + usernameLogin + "'";
 
-        // FILTER berdasarkan username yg login
-        String sql = "SELECT * FROM pelanggan WHERE username = '" + currentUser + "'";
+            ResultSet rs = stmt.executeQuery(sql);
 
-        ResultSet rs = stmt.executeQuery(sql);
+            DefaultTableModel model = (DefaultTableModel) tabelHistory.getModel();
+            model.setRowCount(0);
 
-        DefaultTableModel model = (DefaultTableModel) tabelHistory.getModel();
-        model.setRowCount(0); // bersihin tabel dulu
+            int no = 1;
+            while (rs.next()) {
+                Object[] row = {
+                    no++,
+                    rs.getString("no_telp"),
+                    rs.getString("tipe_kendaraan"),
+                    rs.getString("merk_kendaraan"),
+                    rs.getString("plat_kendaraan"),
+                    rs.getString("opsi_pencucian"),
+                    rs.getString("jadwal_cuci"),
+                    rs.getString("status")
+                };
+                model.addRow(row);
+            }
 
-        int no = 1;
-        while (rs.next()) {
-            Object[] row = {
-                no++,
-                rs.getString("no_telp"),
-                rs.getString("tipe_kendaraan"),
-                rs.getString("merk_kendaraan"),
-                rs.getString("plat_kendaraan"),
-                rs.getString("opsi_pencucian"),
-                rs.getString("jadwal_cuci"),
-                rs.getString("status")
-            };
-            model.addRow(row);
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (Exception e) {
+            System.out.println("Error : " + e.getMessage());
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (Exception e) {
-        System.out.println("Error : " + e.getMessage());
-    }
+        
         
     }//GEN-LAST:event_tabelHistoryAncestorAdded
 
@@ -257,52 +271,115 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     }//GEN-LAST:event_backBtnActionPerformed
 
     private void btnBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBayarActionPerformed
-        // TODO add your handling code here:
-        
-    int[] selectedRows = tabelHistory.getSelectedRows();
+        int selectedRow = tabelHistory.getSelectedRow();
 
-    if (selectedRows.length == 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Pilih dulu pesanan yang mau dibayar.");
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu pesanan dulu.");
         return;
     }
 
-    int totalHarga = 0;
+    String platKendaraan = tabelHistory.getValueAt(selectedRow, 4).toString();
+    String jadwalCuci = tabelHistory.getValueAt(selectedRow, 6).toString();
+    String status = tabelHistory.getValueAt(selectedRow, 7).toString();
 
-    for (int row : selectedRows) {
-    String opsiPencucian = tabelHistory.getValueAt(row, 5).toString();
-
-    System.out.println("DEBUG opsiPencucian: " + opsiPencucian); 
-
-    try {
-        String[] parts = opsiPencucian.split("-");
-        String hargaStr = parts[parts.length - 1].replaceAll("[^\\d]", "");
-        System.out.println("DEBUG hargaStr: " + hargaStr);
-        int harga = Integer.parseInt(hargaStr);
-        totalHarga += harga;
-    } catch (Exception e) {
-        System.out.println("Gagal parsing harga di row " + row + ": " + e.getMessage());
+    if ("Sedang Dicuci".equalsIgnoreCase(status)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan ini sudah dibayar dan sedang dicuci.");
+        return;
     }
-}
 
-        int row = tabelHistory.getSelectedRow();
+    String opsiPencucian = tabelHistory.getValueAt(selectedRow, 5).toString();
+    String hargaStr = opsiPencucian.substring(opsiPencucian.indexOf("Rp.") + 4).replace(".", "").replace(",", "");
+    int harga = Integer.parseInt(hargaStr);
 
-        if (row == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Pilih dulu pesanan yang mau dibayar.");
-            return;
-        }
-
-        String platKendaraan = tabelHistory.getValueAt(row, 4).toString();
-        String jadwalCuci = tabelHistory.getValueAt(row, 6).toString();
-
-        BayarPesanan bayarForm = new BayarPesanan(Login.loggedInUsername, totalHarga, platKendaraan, jadwalCuci);
-        bayarForm.setVisible(true);
-
+    // Buka FORM BayarPesanan kayak btnBatal
+    BayarPesanan bayarForm = new BayarPesanan(usernameLogin, harga, platKendaraan, jadwalCuci);
+    bayarForm.setVisible(true);
     }//GEN-LAST:event_btnBayarActionPerformed
 
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         // TODO add your handling code here:
         tampilDataHistory();
     }//GEN-LAST:event_refreshBtnActionPerformed
+
+    private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
+        // TODO add your handling code here:
+            int selectedRow = tabelHistory.getSelectedRow();
+
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu pesanan dulu.");
+        return;
+    }
+
+    String platKendaraan = tabelHistory.getValueAt(selectedRow, 4).toString();
+    String jadwalCuci = tabelHistory.getValueAt(selectedRow, 6).toString();
+    String status = tabelHistory.getValueAt(selectedRow, 7).toString();
+
+    if ("Sedang Dicuci".equalsIgnoreCase(status)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan ini sudah dibayar dan sedang dicuci, tidak bisa dibatalkan.");
+        return;
+    }
+
+    try {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
+        Statement stmt = conn.createStatement();
+
+        String updateSql = "UPDATE pelanggan SET status = 'Dibatalkan' WHERE username = '" + usernameLogin + "' AND plat_kendaraan = '" + platKendaraan + "' AND jadwal_cuci = '" + jadwalCuci + "'";
+        stmt.executeUpdate(updateSql);
+
+        stmt.close();
+        conn.close();
+
+        tampilDataHistory();
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan berhasil dibatalkan.");
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Terjadi error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnBatalActionPerformed
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        // TODO add your handling code here:
+        
+            int selectedRow = tabelHistory.getSelectedRow();
+
+    if (selectedRow == -1) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu pesanan dulu.");
+        return;
+    }
+
+    String platKendaraan = tabelHistory.getValueAt(selectedRow, 4).toString();
+    String jadwalCuci = tabelHistory.getValueAt(selectedRow, 6).toString();
+    String status = tabelHistory.getValueAt(selectedRow, 7).toString();
+
+    if ("Sedang Dicuci".equalsIgnoreCase(status)) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan sedang dicuci, tidak bisa dihapus.");
+        return;
+    }
+
+    int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Yakin ingin menghapus pesanan ini?", "Konfirmasi Hapus", javax.swing.JOptionPane.YES_NO_OPTION);
+    
+    if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
+            Statement stmt = conn.createStatement();
+
+            String deleteSql = "DELETE FROM pelanggan WHERE username = '" + usernameLogin + "' AND plat_kendaraan = '" + platKendaraan + "' AND jadwal_cuci = '" + jadwalCuci + "'";
+            stmt.executeUpdate(deleteSql);
+
+            stmt.close();
+            conn.close();
+
+            tampilDataHistory();
+
+            javax.swing.JOptionPane.showMessageDialog(this, "Pesanan berhasil dihapus.");
+
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Terjadi error: " + e.getMessage());
+        }
+    }
+        
+    }//GEN-LAST:event_btnHapusActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,7 +411,7 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ViewBooking_Pelanggan().setVisible(true);
+            new ViewBooking_Pelanggan(Login.loggedInUsername).setVisible(true);
             }
         });
     }
@@ -343,6 +420,7 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     private javax.swing.JButton backBtn;
     private javax.swing.JButton btnBatal;
     private javax.swing.JButton btnBayar;
+    private javax.swing.JButton btnHapus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

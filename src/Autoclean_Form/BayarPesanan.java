@@ -31,15 +31,15 @@ private String username;
 private String platKendaraan;
 private String jadwalCuci;
     
-    public BayarPesanan() {
+ public BayarPesanan() {
         initComponents();
         setResizable(false);
         setLocationRelativeTo(null);
         setTitle("AutoClean");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-    }
-    
+}
+   
     
     
 public BayarPesanan(String username, int totalHarga, String platKendaraan, String jadwalCuci) {
