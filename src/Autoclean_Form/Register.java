@@ -5,11 +5,18 @@
 package Autoclean_Form;
 
 /**
+ * Kelas Register merupakan tampilan GUI untuk melakukan registrasi akun pada sistem AutoClean.
+ * Pengguna harus mengisi username, konfirmasi username, password, konfirmasi password,
+ * dan captcha untuk dapat mendaftar.
  *
- * @author MyBook Hype AMD
+ * Fitur:
+ * - Validasi captcha
+ * - Validasi kesamaan username dan password
+ * - Penyimpanan data akun ke database (dengan hash SHA-256 untuk password)
+ * - Toggle show/hide password
+ *
+ * @author Fadhil&Fahriel
  */
-
-
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Random;
@@ -24,6 +31,11 @@ public class Register extends javax.swing.JFrame {
     
     /**
      * Creates new form Register
+     */
+    
+    
+    /**
+     * Konstruktor untuk membuat form registrasi baru dan menginisialisasi elemen GUI.
      */
     public Register() {
         initComponents();
@@ -212,6 +224,15 @@ public class Register extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ConfirmUsernameActionPerformed
 
+    /**
+     * Event handler untuk tombol "Register".
+     * - Melakukan validasi captcha
+     * - Mengecek kesamaan username dan password
+     * - Melakukan pengecekan ke database apakah username sudah digunakan
+     * - Menyimpan akun baru ke tabel `akun`
+     *
+     * @param evt event dari tombol "Register"
+     */
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
     String inputCaptcha = txtCaptchaInput.getText();
     
@@ -224,7 +245,7 @@ public class Register extends javax.swing.JFrame {
         
     String username = RegisterUsername.getText();
     String confirmUsername = ConfirmUsername.getText();
-    String password = confirmPassword.getText();
+    String password = registerPassword1.getText();
     String confirmPass = confirmPassword.getText();
 
 if (!username.equals(confirmUsername)) {
@@ -286,13 +307,23 @@ if (!password.equals(confirmPass)) {
     generateCaptcha();
     }//GEN-LAST:event_btnRefreshCaptchaActionPerformed
 
+    /**
+     * Event handler untuk tombol "Sudah punya akun? Login saja".
+     * Mengalihkan user ke form login.
+     *
+     * @param evt event dari tombol login
+     */
     private void toLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toLoginActionPerformed
        new Login().setVisible(true);
        dispose();
     }//GEN-LAST:event_toLoginActionPerformed
 
+    /**
+     * Menampilkan atau menyembunyikan password berdasarkan toggle button.
+     *
+     * @param evt event dari tombol toggle "show password"
+     */
     private void showPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordActionPerformed
-        // TODO add your handling code here:
 
         if (isPasswordVisible) {
             registerPassword1.setEchoChar('\u2022'); // default bulat-bulat
@@ -304,7 +335,11 @@ if (!password.equals(confirmPass)) {
         
         isPasswordVisible = !isPasswordVisible;
     }//GEN-LAST:event_showPasswordActionPerformed
-
+ 
+    /**
+     * Menghasilkan captcha acak 4 karakter alfanumerik
+     * dan menampilkannya ke label `lblCaptcha`.
+     */
     private void generateCaptcha() {
     String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     StringBuilder captcha = new StringBuilder();
@@ -315,6 +350,12 @@ if (!password.equals(confirmPass)) {
     generatedCaptcha = captcha.toString();
     lblCaptcha.setText(generatedCaptcha); // Tampilkan captcha ke label
 }
+    /**
+     * Mengubah string password menjadi hash SHA-256.
+     *
+     * @param password password dalam bentuk plaintext
+     * @return password yang sudah di-hash
+     */
     private String hashPassword(String password) {
     try {
         MessageDigest md = MessageDigest.getInstance("SHA-256");

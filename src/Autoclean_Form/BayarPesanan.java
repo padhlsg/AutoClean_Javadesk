@@ -5,10 +5,18 @@
 package Autoclean_Form;
 
 /**
+ * Kelas BayarPesanan merupakan form GUI untuk melakukan proses pembayaran
+ * dalam sistem AutoClean JavaDesk. Form ini menampilkan total harga, menerima input saldo,
+ * dan melakukan verifikasi apakah saldo cukup untuk membayar pesanan.
+ *
+ * jika pembayaran berhasil, maka status pesanan akan diperbarui di database menjadi
+ * "Sedang Dicuci". Jika saldo lebih, kembalian ditampilkan. Jika kurang, akan ada
+ * notifikasi kekurangan saldo.
+ *
+ * <p>Kelas ini juga menyediakan opsi untuk kembali (menutup form) tanpa membayar.
  *
  * @author Fadhil
  */
-
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,12 +33,27 @@ public class BayarPesanan extends javax.swing.JFrame {
      * Creates new form BayarPesanan
      */
     
-    
+ /**
+     * Total harga yang harus dibayar oleh pengguna.
+     */   
 private int totalHarga;
+/**
+     * Username pelanggan yang melakukan pembayaran.
+     */
 private String username;
+/**
+     * Plat kendaraan pelanggan.
+     */
 private String platKendaraan;
+ /**
+     * Jadwal cuci yang telah dipilih pelanggan.
+     */
 private String jadwalCuci;
-    
+
+ /**
+     * Konstruktor default, digunakan saat form dibuka tanpa parameter.
+     * Biasanya dipakai untuk testing atau preview.
+     */
  public BayarPesanan() {
         initComponents();
         setResizable(false);
@@ -41,7 +64,15 @@ private String jadwalCuci;
 }
    
     
-    
+  /**
+     * Konstruktor utama yang menerima parameter terkait pesanan.
+     * Digunakan untuk menginisialisasi form pembayaran dengan data spesifik.
+     *
+     * @param username      nama pengguna
+     * @param totalHarga    total harga yang harus dibayar
+     * @param platKendaraan plat nomor kendaraan
+     * @param jadwalCuci    jadwal cuci kendaraan
+     */   
 public BayarPesanan(String username, int totalHarga, String platKendaraan, String jadwalCuci) {
     initComponents();
     setResizable(false);
@@ -153,7 +184,12 @@ public BayarPesanan(String username, int totalHarga, String platKendaraan, Strin
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Event handler untuk tombol "Bayar".
+     * Melakukan validasi saldo dan update status jika pembayaran berhasil.
+     *
+     * @param evt event klik tombol bayar
+     */
     private void btnBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBayarActionPerformed
     try {
         int saldoUser = Integer.parseInt(isiSaldo.getText());
@@ -177,7 +213,9 @@ public BayarPesanan(String username, int totalHarga, String platKendaraan, Strin
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
     }    }//GEN-LAST:event_btnBayarActionPerformed
 
-    
+    /**
+     * Memperbarui status pesanan di database menjadi "Sedang Dicuci".
+     */
     private void updateStatusPesanan() {
     try {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
@@ -200,7 +238,12 @@ public BayarPesanan(String username, int totalHarga, String platKendaraan, Strin
 
     
     
-    
+    /**
+     * Event handler untuk tombol "Kembali".
+     * Menutup form pembayaran.
+     *
+     * @param evt event klik tombol kembali
+     */
     private void btnKembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKembaliActionPerformed
         // TODO add your handling code here:
         dispose();

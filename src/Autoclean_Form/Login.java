@@ -5,11 +5,19 @@
 package Autoclean_Form;
 
 /**
+ * Kelas Login merupakan tampilan GUI untuk proses autentikasi pengguna
+ * dalam aplikasi AutoClean JavaDesk. Form ini memungkinkan pengguna untuk masuk
+ * sebagai admin atau user, dengan validasi melalui username, password (dengan enkripsi SHA-256),
+ * serta verifikasi captcha.
+ *
+ * Jika login berhasil, pengguna akan diarahkan ke tampilan dashboard yang sesuai (Admin atau User).
+ * Jika login gagal, maka akan ditampilkan pesan kesalahan.
+ *
+ * Kelas ini juga menyediakan fitur toggle show/hide password dan tombol navigasi
+ * ke halaman registrasi.
  *
  * @author Fadhil
  */
-
-
 import AutoClean_Connection.Koneksi;
 import javax.swing.ImageIcon;
 import java.util.Random;
@@ -29,8 +37,17 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Register
      */
     
+    
+    /**
+     * Menyimpan username pengguna yang berhasil login.
+     * Digunakan untuk referensi global di seluruh aplikasi.
+     */
     public static String loggedInUsername;
     
+    /**
+     * Konstruktor untuk inisialisasi form Login.
+     * Mengatur tampilan, logo aplikasi, dan captcha awal.
+     */
     public Login() {
         initComponents();
         ImageIcon img = new ImageIcon("Autoclean-Assets/logo.png");
@@ -191,8 +208,16 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * Menangani aksi tombol login. 
+     * Mengecek captcha, mencocokkan username & password yang di-hash
+     * dengan data dari database, serta membedakan login admin dan user.
+     *
+     * @param evt event klik tombol login
+     */
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
-        String inputCaptcha = txtCaptchaInput.getText();
+            String inputCaptcha = txtCaptchaInput.getText();
     
     if (!inputCaptcha.equals(generatedCaptcha)) {
         JOptionPane.showMessageDialog(this, "Captcha salah!");
@@ -243,22 +268,45 @@ public class Login extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error koneksi database:\n" + ex.getMessage());
         }
-    
     }    }//GEN-LAST:event_buttonLoginActionPerformed
-
+     
+    
+    /**
+     * Event untuk menanggapi input pada field captcha.
+     * (Belum diimplementasi logika tambahan).
+     *
+     * @param evt event ketika pengguna menekan Enter di input captcha
+     */
     private void txtCaptchaInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCaptchaInputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCaptchaInputActionPerformed
 
+    /**
+     * Menangani event klik tombol refresh captcha.
+     * Menggenerate ulang captcha baru.
+     *
+     * @param evt event klik tombol refresh captcha
+     */
     private void btnRefreshCaptchaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshCaptchaActionPerformed
     generateCaptcha();
     }//GEN-LAST:event_btnRefreshCaptchaActionPerformed
 
+    /**
+     * Menangani event tombol "Belum punya akun".
+     * Mengarahkan ke halaman register.
+     *
+     * @param evt event klik tombol daftar
+     */
     private void toRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toRegisterActionPerformed
         new Register().setVisible(true);
         dispose();
     }//GEN-LAST:event_toRegisterActionPerformed
 
+    /**
+     * Menampilkan atau menyembunyikan password berdasarkan kondisi toggle.
+     *
+     * @param evt event klik tombol show/hide password
+     */
     private void showPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showPasswordActionPerformed
 
        
@@ -271,6 +319,10 @@ public class Login extends javax.swing.JFrame {
         isPasswordVisible = !isPasswordVisible; // balik kondis
     }//GEN-LAST:event_showPasswordActionPerformed
 
+    /**
+     * Menggenerate captcha acak dari kombinasi huruf kapital dan angka.
+     * Captcha sepanjang 4 karakter akan ditampilkan di label.
+     */
     private void generateCaptcha() {
     String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     StringBuilder captcha = new StringBuilder();
@@ -282,6 +334,13 @@ public class Login extends javax.swing.JFrame {
     lblCaptcha.setText(generatedCaptcha); // Tampilkan captcha ke label
 }
 
+     /**
+     * Mengubah string password biasa menjadi hash SHA-256.
+     * Digunakan untuk mencocokkan password terenkripsi dalam database.
+     *
+     * @param password string password dari input pengguna
+     * @return string hasil hash SHA-256
+     */
     private String hashPassword(String password) {
     try {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -298,8 +357,11 @@ public class Login extends javax.swing.JFrame {
     }
 }
     
-    /**
-     * @param args the command line arguments
+/**
+     * Metode main untuk menjalankan form login secara independen.
+     * Menggunakan look and feel Nimbus jika tersedia.
+     *
+     * @param args argumen baris perintah (tidak digunakan)
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

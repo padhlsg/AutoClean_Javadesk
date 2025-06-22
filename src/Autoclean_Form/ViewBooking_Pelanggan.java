@@ -5,15 +5,24 @@
 package Autoclean_Form;
 
 /**
+ * Kelas ViewBooking_Pelanggan menampilkan daftar riwayat pemesanan pelanggan.
+ * Kelas ini memuat data dari tabel `pelanggan` di database berdasarkan username yang sedang login.
+ * Fitur utama:
+ * - Menampilkan data pemesanan pelanggan
+ * - Bayar pesanan (membuka form BayarPesanan)
+ * - Batalkan pesanan (update status menjadi "Dibatalkan")
+ * - Hapus pesanan
+ * - Refresh tabel
+ * - Kembali ke halaman pelanggan
  *
  * @author Fadhil
  */
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
+
 
 public class ViewBooking_Pelanggan extends javax.swing.JFrame {
 
@@ -23,6 +32,12 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     
     private String usernameLogin;
     
+    /**
+ * Konstruktor ViewBooking_Pelanggan.
+ * Inisialisasi GUI dan memuat data riwayat pemesanan berdasarkan username login.
+ *
+ * @param usernameLogin username pelanggan yang sedang login
+ */
     public ViewBooking_Pelanggan(String usernameLogin) {
         this.usernameLogin = usernameLogin;
         initComponents();
@@ -33,6 +48,10 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         tabelHistory.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
     
+    /**
+ * Method untuk mengambil dan menampilkan data pemesanan pelanggan dari database
+ * ke dalam tabel berdasarkan username yang sedang login.
+ */
     private void tampilDataHistory() {
         
         try {
@@ -227,6 +246,12 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+ * Digunakan saat tabel ditambahkan ke container, akan menampilkan ulang data history.
+ *
+ * @param evt event dari tabel ditambahkan ke panel
+ */
     private void tabelHistoryAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabelHistoryAncestorAdded
         // TODO add your handling code here:
                 try {
@@ -265,11 +290,24 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
         
     }//GEN-LAST:event_tabelHistoryAncestorAdded
 
+    
+    /**
+ * Event handler untuk tombol "Kembali".
+ * Akan kembali ke halaman utama pelanggan.
+ *
+ * @param evt event klik tombol
+ */
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         new Pelanggan().setVisible(true);
         dispose();
     }//GEN-LAST:event_backBtnActionPerformed
 
+    /**
+ * Event handler untuk tombol "Bayar".
+ * Membuka form pembayaran jika pesanan belum dibayar.
+ *
+ * @param evt event klik tombol
+ */
     private void btnBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBayarActionPerformed
         int selectedRow = tabelHistory.getSelectedRow();
 
@@ -296,11 +334,23 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     bayarForm.setVisible(true);
     }//GEN-LAST:event_btnBayarActionPerformed
 
+    /**
+ * Event handler untuk tombol "Muat Ulang".
+ * Mengambil ulang data riwayat pemesanan dari database dan menampilkannya ke tabel.
+ *
+ * @param evt event klik tombol
+ */
     private void refreshBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshBtnActionPerformed
         // TODO add your handling code here:
         tampilDataHistory();
     }//GEN-LAST:event_refreshBtnActionPerformed
 
+    /**
+ * Event handler untuk tombol "Batalkan".
+ * Mengubah status pesanan menjadi "Dibatalkan" jika belum dalam proses pencucian.
+ *
+ * @param evt event klik tombol
+ */
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
             int selectedRow = tabelHistory.getSelectedRow();
@@ -338,6 +388,12 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnBatalActionPerformed
 
+    /**
+ * Event handler untuk tombol "Hapus".
+ * Menghapus data pemesanan dari database jika belum dalam proses pencucian.
+ *
+ * @param evt event klik tombol
+ */
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         // TODO add your handling code here:
         
