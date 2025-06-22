@@ -153,6 +153,12 @@ public class AdminDashboard extends javax.swing.JFrame implements AdminAction{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnBatal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBatalActionPerformed(evt);
+            }
+        });
+
         tabelHistory.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         tabelHistory.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tabelHistory.setModel(new javax.swing.table.DefaultTableModel(
