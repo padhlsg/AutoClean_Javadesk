@@ -5,7 +5,18 @@
 package Autoclean_Form;
 
 /**
- *
+ * Kelas Pelanggan merepresentasikan antarmuka pengguna (GUI) untuk pelanggan 
+ * yang ingin memesan layanan pencucian kendaraan melalui aplikasi AutoClean.
+ * 
+ * Fitur utama:
+ * - Input data pelanggan dan kendaraan
+ * - Pemilihan opsi pencucian
+ * - Pemilihan jadwal pencucian
+ * - Penyimpanan data ke database
+ * - Navigasi ke halaman riwayat dan logout
+ * 
+ * Kelas ini menggunakan komponen Swing dan JCalendar.
+ * 
  * @author Fadhil
  */
 import java.awt.Image;
@@ -21,6 +32,11 @@ import javax.swing.*;
 public class Pelanggan extends javax.swing.JFrame {
     /**
      * Creates new form Pelanggan
+     */
+    
+    /**
+     * Konstruktor untuk kelas Pelanggan.
+     * Inisialisasi komponen UI, mengatur posisi, dan memuat gambar.
      */
     public Pelanggan() {
         initComponents();
@@ -275,17 +291,38 @@ public class Pelanggan extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * Menangani aksi ketika tombol "KELUAR" diklik.
+     * Menampilkan pesan logout dan kembali ke halaman login.
+     * 
+     * @param evt event aksi tombol keluar
+     */
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutButtonActionPerformed
         JOptionPane.showMessageDialog(this, "Logout berhasil!");
         new Login().setVisible(true);
         dispose();
     }//GEN-LAST:event_logoutButtonActionPerformed
 
+    /**
+     * Menangani aksi ketika tombol "RIWAYAT" diklik.
+     * Membuka jendela untuk melihat riwayat booking berdasarkan username yang login.
+     * 
+     * @param evt event aksi tombol riwayat
+     */
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
         new ViewBooking_Pelanggan(Login.loggedInUsername).setVisible(true);        
         dispose();
     }//GEN-LAST:event_historyButtonActionPerformed
 
+    
+    /**
+     * Menangani aksi ketika tombol "KIRIM" diklik.
+     * Validasi input, instansiasi objek PelangganModel, 
+     * serta menyimpan data ke database.
+     * 
+     * @param evt event aksi tombol daftar
+      */
     private void btnDaftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDaftarActionPerformed
         String username = Login.loggedInUsername;
         String telp = inputNomorTelp.getText();
@@ -334,7 +371,12 @@ public class Pelanggan extends javax.swing.JFrame {
 
     
         
-    
+    /**
+     * Menyimpan data pelanggan ke database jika objek user merupakan instance dari PelangganModel.
+     * Menyimpan data seperti username, no telepon, tipe dan merk kendaraan, plat, opsi cuci, dan jadwal cuci.
+     * 
+     * @param user Objek user bertipe User yang telah di-cast menjadi PelangganModel
+     */
     private void simpanKeDatabase(User user) {
     try {
         if (user instanceof PelangganModel p) {

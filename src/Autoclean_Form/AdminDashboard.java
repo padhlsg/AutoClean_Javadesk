@@ -4,24 +4,42 @@
  */
 
 package Autoclean_Form;
-
+/**
+ * AdminDashboard adalah tampilan utama untuk admin pada aplikasi AutoClean JavaDesk.
+ * Kelas ini menampilkan riwayat pelanggan dan menyediakan tombol untuk melakukan aksi
+ * seperti edit data, hapus data, mencuci kendaraan, membatalkan pesanan, dan keluar dari sistem.
+ * 
+ * Kelas ini mengimplementasikan interface
+ * 
 /**
  *
- * @author Fadhil
+ * @author Fadhil&Fahriel
  */
 
 
+import AutoClean_Code.AdminAction;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import java.util.Random;
 import javax.swing.*;
-public class AdminDashboard extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminDashboard
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
+
+
+public class AdminDashboard extends javax.swing.JFrame implements AdminAction{
+
+/**
+     * Konstruktor default yang menginisialisasi komponen GUI dan mengatur properti frame.
      */
     public AdminDashboard() {
         initComponents();
+        setResizable(false);
+        setLocationRelativeTo(null);
+        setTitle("Admin AutoClean JavaDesk");
     }
 
     /**
@@ -34,42 +52,207 @@ public class AdminDashboard extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        btnEdit = new javax.swing.JButton();
+        btnHapus = new javax.swing.JButton();
+        btnCuci = new javax.swing.JButton();
+        btnBatal = new javax.swing.JButton();
+        btnKeluar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelHistory = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+
+        jPanel2.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo.png"))); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel1.setText("AUTOCLEAN JAVADESK");
+
+        jLabel3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jLabel3.setText("ADMIN DASHBOARD");
+
+        btnEdit.setText("Edit");
+
+        btnHapus.setText("Hapus");
+
+        btnCuci.setText("Cuci");
+
+        btnBatal.setText("Batalkan");
+
+        btnKeluar.setText("Keluar");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnCuci, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1)
+                .addGap(44, 44, 44)
+                .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCuci, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnBatal, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnKeluar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tabelHistory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tabelHistory.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tabelHistory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "No", "Nama", "No Telp", "Tipe Kendaraan", "Merk Kendaraan", "Plat Kendaraan", "Opsi Pencucian", "Jadwal Cuci", "Status"
+            }
+        ));
+        tabelHistory.getTableHeader().setReorderingAllowed(false);
+        tabelHistory.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tabelHistoryAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        jScrollPane1.setViewportView(tabelHistory);
+        if (tabelHistory.getColumnModel().getColumnCount() > 0) {
+            tabelHistory.getColumnModel().getColumn(0).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(0).setPreferredWidth(10);
+            tabelHistory.getColumnModel().getColumn(1).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(2).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(3).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(4).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(5).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(6).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(7).setResizable(false);
+            tabelHistory.getColumnModel().getColumn(8).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 836, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 846, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 836, Short.MAX_VALUE)
+            .addGap(0, 1146, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 577, Short.MAX_VALUE)
+            .addGap(0, 601, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    /**
+     * Metode ini akan dipanggil saat komponen tabel dimuat ke dalam frame.
+     * Metode ini mengambil data dari database MySQL dan menampilkannya dalam tabel.
+     * 
+     * @param evt event yang terjadi saat tabel dimasukkan ke dalam hierarki kontainer.
+     */
+    private void tabelHistoryAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabelHistoryAncestorAdded
+
+        try {
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/autoclean_javadesk", "root", "");
+        Statement stmt = conn.createStatement();
+
+        // Ambil semua data pelanggan
+        String sql = "SELECT * FROM pelanggan";
+
+        ResultSet rs = stmt.executeQuery(sql);
+
+        DefaultTableModel model = (DefaultTableModel) tabelHistory.getModel();
+        model.setRowCount(0);
+
+        int no = 1;
+        while (rs.next()) {
+            Object[] row = {
+                no++,
+                rs.getString("username"), // ini buat kolom "Nama"
+                rs.getString("no_telp"), // ini buat kolom "No Telpon"
+                rs.getString("tipe_kendaraan"), // ini buat kolom "Tipe Kendaraan"
+                rs.getString("merk_kendaraan"), // ini buat kolom "Merk Kendaraan"
+                rs.getString("plat_kendaraan"), // ini buat kolom "Plat Kendaraan"
+                rs.getString("opsi_pencucian"), // ini buat kolom "Opsi Pencucian"
+                rs.getString("jadwal_cuci"), // ini buat kolom "Jadwal Cuci"
+                rs.getString("status") // ini buat kolom "Status"
+            };
+            model.addRow(row);
+        }
+
+        rs.close();
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        System.out.println("Error : " + e.getMessage());
+    }
+
+    }//GEN-LAST:event_tabelHistoryAncestorAdded
 
     /**
-     * @param args the command line arguments
+     * Metode utama untuk menjalankan aplikasi AdminDashboard.
+     * @param args parameter dari command line (tidak digunakan).
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -102,8 +285,19 @@ public class AdminDashboard extends javax.swing.JFrame {
             }
         });
     }
-
+// Komponen GUI deklarasi (tidak dimodifikasi secara manual)
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBatal;
+    private javax.swing.JButton btnCuci;
+    private javax.swing.JButton btnEdit;
+    private javax.swing.JButton btnHapus;
+    private javax.swing.JButton btnKeluar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabelHistory;
     // End of variables declaration//GEN-END:variables
 }
