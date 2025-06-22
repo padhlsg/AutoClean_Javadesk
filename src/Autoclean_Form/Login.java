@@ -94,7 +94,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel1.setText("Password");
+        jLabel1.setText("Kata Sandi");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(50, 260, 90, 21);
 
@@ -102,17 +102,17 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(153, 153, 153));
         jLabel3.setText("Pesan Janji Temu Mobil Pesan Janji Temu Mobil");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(50, 70, 420, 25);
+        jLabel3.setBounds(50, 130, 420, 25);
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans Narrow", 1, 36)); // NOI18N
         jLabel4.setText("Masuk AutoClean JavaDesk");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(50, 40, 430, 40);
+        jLabel4.setBounds(50, 100, 430, 40);
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel6.setText("Username");
+        jLabel6.setText("Nama Pengguna");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(50, 190, 90, 24);
+        jLabel6.setBounds(50, 190, 140, 24);
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jLabel8.setText("Masukan Captcha");
@@ -132,7 +132,7 @@ public class Login extends javax.swing.JFrame {
         jPanel1.add(buttonLogin);
         buttonLogin.setBounds(60, 470, 170, 30);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo.png")));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo-removebg-preview.png")));
         jPanel1.add(jLabel7);
         jLabel7.setBounds(530, 170, 200, 200);
 
@@ -156,7 +156,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnRefreshCaptcha);
-        btnRefreshCaptcha.setBounds(60, 430, 140, 23);
+        btnRefreshCaptcha.setBounds(60, 430, 170, 23);
 
         toRegister.setBackground(new java.awt.Color(221, 241, 255));
         toRegister.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N

@@ -309,7 +309,7 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
  * @param evt event klik tombol
  */
     private void btnBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBayarActionPerformed
-        int selectedRow = tabelHistory.getSelectedRow();
+    int selectedRow = tabelHistory.getSelectedRow();
 
     if (selectedRow == -1) {
         javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu pesanan dulu.");
@@ -320,8 +320,12 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     String jadwalCuci = tabelHistory.getValueAt(selectedRow, 6).toString();
     String status = tabelHistory.getValueAt(selectedRow, 7).toString();
 
-    if ("Sedang Dicuci".equalsIgnoreCase(status)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan ini sudah dibayar dan sedang dicuci.");
+    // Pesanan yang tidak bisa dibayar:
+    if ("Sedang Dicuci".equalsIgnoreCase(status) || 
+        "Dibatalkan".equalsIgnoreCase(status) || 
+        "Selesai".equalsIgnoreCase(status)) 
+    {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan tidak bisa dibayar (Status: " + status + ").");
         return;
     }
 
@@ -329,7 +333,6 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     String hargaStr = opsiPencucian.substring(opsiPencucian.indexOf("Rp.") + 4).replace(".", "").replace(",", "");
     int harga = Integer.parseInt(hargaStr);
 
-    // Buka FORM BayarPesanan kayak btnBatal
     BayarPesanan bayarForm = new BayarPesanan(usernameLogin, harga, platKendaraan, jadwalCuci);
     bayarForm.setVisible(true);
     }//GEN-LAST:event_btnBayarActionPerformed
@@ -353,7 +356,7 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
  */
     private void btnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBatalActionPerformed
         // TODO add your handling code here:
-            int selectedRow = tabelHistory.getSelectedRow();
+    int selectedRow = tabelHistory.getSelectedRow();
 
     if (selectedRow == -1) {
         javax.swing.JOptionPane.showMessageDialog(this, "Pilih salah satu pesanan dulu.");
@@ -364,8 +367,12 @@ public class ViewBooking_Pelanggan extends javax.swing.JFrame {
     String jadwalCuci = tabelHistory.getValueAt(selectedRow, 6).toString();
     String status = tabelHistory.getValueAt(selectedRow, 7).toString();
 
-    if ("Sedang Dicuci".equalsIgnoreCase(status)) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan ini sudah dibayar dan sedang dicuci, tidak bisa dibatalkan.");
+    // Pesanan yang tidak bisa dibatalkan:
+    if ("Sedang Dicuci".equalsIgnoreCase(status) || 
+        "Dibatalkan".equalsIgnoreCase(status) || 
+        "Selesai".equalsIgnoreCase(status)) 
+    {
+        javax.swing.JOptionPane.showMessageDialog(this, "Pesanan tidak bisa dibatalkan (Status: " + status + ").");
         return;
     }
 

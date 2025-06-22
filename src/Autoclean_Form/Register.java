@@ -87,9 +87,9 @@ public class Register extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel1.setText("Password");
+        jLabel1.setText("Kata Sandi");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(50, 240, 90, 21);
+        jLabel1.setBounds(30, 240, 90, 21);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 153, 153));
@@ -103,21 +103,21 @@ public class Register extends javax.swing.JFrame {
         jLabel4.setBounds(50, 40, 430, 40);
 
         jLabel5.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel5.setText("Confirm Username");
+        jLabel5.setText("Konfirm Nama Pengguna");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(50, 180, 160, 24);
+        jLabel5.setBounds(30, 180, 210, 24);
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel6.setText("Username");
+        jLabel6.setText("Nama Pengguna");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(50, 120, 90, 24);
+        jLabel6.setBounds(30, 120, 150, 24);
 
         jLabel8.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel8.setText("Input Captcha");
+        jLabel8.setText("Masuk Captcha");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(220, 340, 160, 21);
+        jLabel8.setBounds(260, 340, 160, 21);
         jPanel1.add(RegisterUsername);
-        RegisterUsername.setBounds(220, 120, 260, 30);
+        RegisterUsername.setBounds(260, 120, 260, 30);
 
         ConfirmUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,10 +125,10 @@ public class Register extends javax.swing.JFrame {
             }
         });
         jPanel1.add(ConfirmUsername);
-        ConfirmUsername.setBounds(220, 180, 260, 30);
+        ConfirmUsername.setBounds(260, 180, 260, 30);
 
         btnRegister.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N
-        btnRegister.setText("Register");
+        btnRegister.setText("Daftar");
         btnRegister.setBorder(null);
         btnRegister.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,13 +138,13 @@ public class Register extends javax.swing.JFrame {
         jPanel1.add(btnRegister);
         btnRegister.setBounds(60, 480, 170, 30);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo.png")));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logo-removebg-preview.png")));
         jLabel7.setMaximumSize(new java.awt.Dimension(20, 20));
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(530, 170, 200, 200);
+        jLabel7.setBounds(560, 170, 200, 200);
 
         lblCaptcha.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        lblCaptcha.setText("rand");
+        lblCaptcha.setText("capctha");
         jPanel1.add(lblCaptcha);
         lblCaptcha.setBounds(70, 380, 70, 24);
 
@@ -154,21 +154,21 @@ public class Register extends javax.swing.JFrame {
             }
         });
         jPanel1.add(txtCaptchaInput);
-        txtCaptchaInput.setBounds(220, 370, 260, 50);
+        txtCaptchaInput.setBounds(260, 370, 260, 50);
 
-        btnRefreshCaptcha.setText("Refresh code");
+        btnRefreshCaptcha.setText("Muat Ulang code");
         btnRefreshCaptcha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRefreshCaptchaActionPerformed(evt);
             }
         });
         jPanel1.add(btnRefreshCaptcha);
-        btnRefreshCaptcha.setBounds(60, 440, 120, 23);
+        btnRefreshCaptcha.setBounds(60, 440, 170, 23);
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel9.setText("Confirm Password");
+        jLabel9.setText("Konfirm Kata Sandi");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(50, 300, 160, 21);
+        jLabel9.setBounds(30, 300, 160, 21);
 
         toLogin.setBackground(new java.awt.Color(221, 241, 255));
         toLogin.setFont(new java.awt.Font("Sans Serif Collection", 0, 12)); // NOI18N
@@ -187,9 +187,9 @@ public class Register extends javax.swing.JFrame {
         jPanel1.add(toLogin);
         toLogin.setBounds(530, 510, 210, 35);
         jPanel1.add(confirmPassword);
-        confirmPassword.setBounds(220, 300, 260, 30);
+        confirmPassword.setBounds(260, 300, 260, 30);
         jPanel1.add(registerPassword1);
-        registerPassword1.setBounds(220, 242, 260, 30);
+        registerPassword1.setBounds(260, 240, 260, 30);
 
         showPassword.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/view.png"))); // NOI18N
         showPassword.addActionListener(new java.awt.event.ActionListener() {
@@ -198,7 +198,7 @@ public class Register extends javax.swing.JFrame {
             }
         });
         jPanel1.add(showPassword);
-        showPassword.setBounds(490, 240, 30, 30);
+        showPassword.setBounds(530, 240, 30, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

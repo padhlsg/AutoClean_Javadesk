@@ -72,35 +72,35 @@ public class AdminDashboard extends javax.swing.JFrame implements AdminAction{
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jLabel3.setText("ADMIN DASHBOARD");
 
-        btnEdit.setText("Edit");
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/editing.png"))); // NOI18N
+        btnEdit.setText("   Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
             }
         });
 
-        btnHapus.setText("Hapus");
+        btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/delete.png"))); // NOI18N
+        btnHapus.setText("  Hapus");
         btnHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHapusActionPerformed(evt);
             }
         });
 
-        btnCuci.setText("Cuci");
+        btnCuci.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/car-wash.png"))); // NOI18N
+        btnCuci.setText("     Cuci");
         btnCuci.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCuciActionPerformed(evt);
             }
         });
 
-        btnBatal.setText("Batalkan");
-        btnBatal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBatalActionPerformed(evt);
-            }
-        });
+        btnBatal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/close.png"))); // NOI18N
+        btnBatal.setText("   Batalkan");
 
-        btnKeluar.setText("Keluar");
+        btnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/AutoClean-Assets/logout.png"))); // NOI18N
+        btnKeluar.setText("    Keluar");
         btnKeluar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnKeluarActionPerformed(evt);
@@ -153,7 +153,7 @@ public class AdminDashboard extends javax.swing.JFrame implements AdminAction{
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabelHistory.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tabelHistory.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
         tabelHistory.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         tabelHistory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
