@@ -192,59 +192,58 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
-    String inputCaptcha = txtCaptchaInput.getText();
+        String inputCaptcha = txtCaptchaInput.getText();
     
     if (!inputCaptcha.equals(generatedCaptcha)) {
         JOptionPane.showMessageDialog(this, "Captcha salah!");
-        generateCaptcha(); // regenerate
+        generateCaptcha();
         return;
     }
 
     String user = LoginrUsername.getText().trim();
     String pass = LoginPassword.getText().trim();
-    String hashedPass = hashPassword(pass);
     
     boolean sebagaiAdmin = jCheckBox1.isSelected();
     
-    String sql = "SELECT * FROM akun WHERE username = ? AND password = ?";
-    try (Connection conn = Koneksi.connect();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-
-         ps.setString(1, user);
-         ps.setString(2, hashedPass);
-         try (ResultSet rs = ps.executeQuery()) {
-             if (rs.next()) {
-                 int id = rs.getInt("id");
-                 String uname = rs.getString("username");
-                 
-                 
-                 Login.loggedInUsername = uname;
-
-                 if (sebagaiAdmin && id == 1) {
-                     JOptionPane.showMessageDialog(this, "Login admin berhasil!");
-                     // buka form admin
-                     new AdminDashboard().setVisible(true);
-                     
-                     dispose();
-                 } else if (!sebagaiAdmin) {
-                     JOptionPane.showMessageDialog(this, "Login user berhasil!");
-                     // buka form pelanggan
-                     new Pelanggan().setVisible(true);
-                     dispose();
-                 } else {
-                     JOptionPane.showMessageDialog(this, "Anda bukan admin!");
-                 }
-             } else {
-                 JOptionPane.showMessageDialog(this, "Username atau password salah!");
-                 generateCaptcha();
-             }
-         }
-         
-    
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(this, "Error koneksi database:\n" + ex.getMessage());
+    if (sebagaiAdmin) {
+        // login admin: username == "admin", password == "admin123"
+        if (user.equals("admin") && pass.equals("admin123")) {
+            JOptionPane.showMessageDialog(this, "Login admin berhasil!");
+            new AdminDashboard().setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Username atau password admin salah!");
+            generateCaptcha();
+        }
+    } else {
+        // login user biasa (pakai database)
+        String hashedPass = hashPassword(pass);
         
-     
+        String sql = "SELECT * FROM akun WHERE username = ? AND password = ?";
+        try (Connection conn = Koneksi.connect();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user);
+            ps.setString(2, hashedPass);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String uname = rs.getString("username");
+                    Login.loggedInUsername = uname;
+
+                    JOptionPane.showMessageDialog(this, "Login user berhasil!");
+                    new Pelanggan().setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Username atau password salah!");
+                    generateCaptcha();
+                }
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error koneksi database:\n" + ex.getMessage());
+        }
+    
     }    }//GEN-LAST:event_buttonLoginActionPerformed
 
     private void txtCaptchaInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCaptchaInputActionPerformed

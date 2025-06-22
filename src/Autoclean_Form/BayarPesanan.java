@@ -79,8 +79,6 @@ public BayarPesanan(String username, int totalHarga, String platKendaraan, Strin
 
         jPanel1.setBackground(new java.awt.Color(221, 241, 255));
 
-        isiSaldo.setText("contoh saldo");
-
         btnBayar.setText("BAYAR");
         btnBayar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
