@@ -6,7 +6,8 @@
 -- Waktu pembuatan: 22 Jun 2025 pada 12.09
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.0.30
-
+CREATE Database autoclean_javadesk;
+USE autoclean_javadesk;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
